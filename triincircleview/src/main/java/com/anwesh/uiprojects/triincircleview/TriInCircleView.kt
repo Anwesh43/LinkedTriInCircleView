@@ -23,6 +23,7 @@ val circleColor : Int = Color.parseColor("#BDBDBD")
 val fillColor : Int = Color.parseColor("#212121")
 val rFactor : Float = 1.5f
 val strokeFactor : Int = 90
+val delay : Long = 20
 
 fun Int.inverse() : Float = 1F / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -55,8 +56,6 @@ fun Canvas.drawTICNode(i : Int, scale : Float, paint : Paint) {
         path.lineTo(0f, pSize)
         path.lineTo(pSize * sc1.divideScale(j, tri) * j.jsf(), pSize)
         paint.style = Paint.Style.FILL
-        drawPath(path, paint)
-        paint.style = Paint.Style.STROKE
         drawPath(path, paint)
     }
     restore()
@@ -106,7 +105,7 @@ class TriInCircleView(ctx : Context) : View(ctx) {
             if (animated) {
                 cb()
                 try {
-                    Thread.sleep(50)
+                    Thread.sleep(delay)
                     view.invalidate()
                 } catch(ex : Exception) {
 
