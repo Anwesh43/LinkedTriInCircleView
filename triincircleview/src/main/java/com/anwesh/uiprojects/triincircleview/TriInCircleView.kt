@@ -47,7 +47,7 @@ fun Canvas.drawTICNode(i : Int, scale : Float, paint : Paint) {
     paint.color = circleColor
     drawCircle(0f, 0f, size, paint)
     for (j in 0..(tri - 1)) {
-        paint.color = fillColor
+        paint.color = triColor
         val path : Path = Path()
         path.moveTo(0f, -pSize)
         path.lineTo(0f, pSize)
@@ -187,6 +187,28 @@ class TriInCircleView(ctx : Context) : View(ctx) {
 
         fun startUpdating(cb : () -> Unit) {
             curr.startUpdating(cb)
+        }
+    }
+
+    data class Renderer(var view : TriInCircleView) {
+
+        private val animator : Animator = Animator(view)
+        private val tic : TriInCircle = TriInCircle(0)
+
+        fun render(canvas : Canvas, paint : Paint) {
+            canvas.drawColor(fillColor)
+            tic.draw(canvas, paint)
+            animator.animate {
+                tic.update {i, scl ->
+                    animator.stop()
+                }
+            }
+        }
+
+        fun handleTap() {
+            tic.startUpdating {
+                animator.start()
+            }
         }
     }
 }
