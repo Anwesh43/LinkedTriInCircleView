@@ -21,7 +21,8 @@ val sizeFactor : Float = 2.9f
 val triColor : Int = Color.parseColor("#673AB7")
 val circleColor : Int = Color.parseColor("#BDBDBD")
 val fillColor : Int = Color.parseColor("#212121")
-val rFactor : Int = 3
+val rFactor : Float = 1.5f
+val strokeFactor : Int = 90
 
 fun Int.inverse() : Float = 1F / this
 fun Float.maxScale(i : Int, n : Int) : Float = Math.max(0f, this - i * n.inverse())
@@ -41,6 +42,7 @@ fun Canvas.drawTICNode(i : Int, scale : Float, paint : Paint) {
     val size : Float = gap / sizeFactor
     val pSize : Float = size / rFactor
     paint.strokeCap = Paint.Cap.ROUND
+    paint.strokeWidth = Math.min(w, h) / strokeFactor
     save()
     translate(w / 2, gap * (i + 1))
     rotate(90f * i.isf() * sc2)
@@ -52,6 +54,9 @@ fun Canvas.drawTICNode(i : Int, scale : Float, paint : Paint) {
         path.moveTo(0f, -pSize)
         path.lineTo(0f, pSize)
         path.lineTo(pSize * sc1.divideScale(j, tri) * j.jsf(), pSize)
+        paint.style = Paint.Style.FILL
+        drawPath(path, paint)
+        paint.style = Paint.Style.STROKE
         drawPath(path, paint)
     }
     restore()
@@ -218,7 +223,7 @@ class TriInCircleView(ctx : Context) : View(ctx) {
         fun create(activity : Activity) : TriInCircleView {
             val view : TriInCircleView = TriInCircleView(activity)
             activity.setContentView(view)
-            return view 
+            return view
         }
     }
 }
