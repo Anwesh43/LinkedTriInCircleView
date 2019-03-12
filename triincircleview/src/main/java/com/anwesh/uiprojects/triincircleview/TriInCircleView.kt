@@ -212,4 +212,13 @@ class TriInCircleView(ctx : Context) : View(ctx) {
             }
         }
     }
+
+    companion object {
+
+        fun create(activity : Activity) : TriInCircleView {
+            val view : TriInCircleView = TriInCircleView(activity)
+            activity.setContentView(view)
+            return view 
+        }
+    }
 }
